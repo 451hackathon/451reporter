@@ -10,5 +10,6 @@ Currently all this extension does is display a tiny red banner if the browser re
 - Make sure that the extension icon is visible next to the omnibox / address bar. If it is not, it's probably hidden under the options menu on the right hand side. Click the vertical three dots, right click the extension icon, and click `Keep in Toolbar`.
 - Test! Expected behaviour is that the extension icon will display `451` in a small red banner for 3 seconds.
 
-Example websites to test on: [https://github.com/buildit/twig](https://github.com/buildit/twig/), [https://frankcasino.com](https://frankcasino.com). 
+Example websites to test on: [https://github.com/SonyPS3/scedev](https://github.com/SonyPS3/scedev), [https://frankcasino.com](https://frankcasino.com). 
 
+GitHub maintains a repository of DMCA takedown notices at [https://github.com/github/dmca](https://github.com/github/dmca).
