@@ -44,7 +44,7 @@ function getCurrentTabAsync() {
                 const tab = tabs[0];
                 if (tab) resolve(tab);
                 else reject('Error getting current tab');
-            })
+            });
         }
     );
 };
@@ -83,14 +83,14 @@ function setBrowserAction(params) {
 
 
 function notify(details) {
-    console.log("in notify for " + details.url)
+    console.log("in notify for " + details.url);
     const resourceUrl = details.url;
     const ipServer = details.ip;
     const timeStamp = details.timeStamp;
 
     const options = {
         body: 'Click to see details',
-        requireInteraction: true,
+        requireInteraction: true
     };
 
     const titleOfNotification = 'Resource blocked for legal reasons';
