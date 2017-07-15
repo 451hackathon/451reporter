@@ -14,11 +14,7 @@ chrome.webRequest.onCompleted.addListener(function(details) {
                 /* NOTE: currentTab is an object of type:
                  * https://developer.chrome.com/extensions/tabs#type-Tab, 
                  * NOT a tabId or tabUrl */
-                setBrowserAction({
-                    text: '451',
-                    color: 'red',
-                    tabId: currentTab.id
-                });
+                chrome.pageAction.show(currentTab.id);
                 addToBlockedResources(currentTab.url, details);
             })
             .catch((error) => console.error(error));
@@ -58,29 +54,6 @@ function addToBlockedResources(currentUrl, details) {
     }
     console.log(blockedResources);
 }
-
-/* 
- * params -> [[clear (boolean) | text (string)] | color (string) |
- *  tabId (number) ]
- */
-function setBrowserAction(params) {
-    if (params['text']) {
-        chrome.browserAction.setBadgeText({
-            text: params['text'],
-            tabId: params['tabId']
-        });
-    } else if (params['clear']) {
-        chrome.browserAction.setBadgeText({ text: '' });
-    }
-    if (params['color']) {
-        chrome.browserAction
-            .setBadgeBackgroundColor({
-                color: params['color'],
-                tabId: params['tabId']
-            });
-    }
-}
-
 
 function notify(details) {
     console.log("in notify for " + details.url);
