@@ -1,6 +1,7 @@
 # 451 - Browser extension
 ![451_Logo(PNG)](https://raw.githubusercontent.com/codarrenvelvindron/451/master/icons/451/icon_128.png)
-![screenshot_451](/screenshots/451_screenshot_chrome.png?raw=true)
+![screenshot_451](https://github.com/451hackathon/browserplugin/blob/master/451_check_extension/screenshots/451_screenshot_chrome.png?raw=true)
+
 ## Project and Goals:
 
 ### Champions: 
