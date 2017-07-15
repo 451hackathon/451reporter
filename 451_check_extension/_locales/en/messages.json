@@ -1,0 +1,15 @@
+{
+  "appName": {
+    "message": "http 451",
+    "description": "application title"
+  },
+  "appDesc": {
+    "message": "This app checks for error 451!", 
+    "description":"Description in chrome store"
+  },
+  "appAction": {
+    "message": "http 451", 
+    "description":"tooltip"
+  }
+}
+
