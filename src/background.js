@@ -1,62 +1,93 @@
+/* 
+ * key: top level url, value: list of blocked resources
+ */
 let blockedResources = {};
 
+/* https://developer.chrome.com/extensions/webRequest#event-onCompleted */
 chrome.webRequest.onCompleted.addListener(function(details) {
     if (details.statusCode == 451) {
-        getCurrentTabId(details, addToBlocked);
+        /* Fetch current tab, add a badge tied to current tabId, and
+         * add to blockedResources
+         */
+        getCurrentTabAsync()
+            .then((currentTab) => {
+                /* NOTE: currentTab is an object of type:
+                 * https://developer.chrome.com/extensions/tabs#type-Tab, 
+                 * NOT a tabId or tabUrl */
+                setBrowserAction({
+                    text: '451',
+                    color: 'red',
+                    tabId: currentTab.id
+                });
+                addToBlockedResources(currentTab.url, details);
+            })
+            .catch((error) => console.error(error));
+        /* Create a notification */
+        notify(details);
     }
 }, { urls: ["<all_urls>"] });
 
-function addToBlocked(tabId, url, details) {
-    if (blockedResources[url]) {
-        blockedResources[url].push(details.url);
+/* 
+ * Get the current URL. Note that chrome.tabs.query is async, and 
+ * is wrapped in a Promise so calling code can handle cleanly instead
+ * of having to pass in a callback.
+ * Citation: https://developer.chrome.com/extensions/getstarted
+ */
+function getCurrentTabAsync() {
+    const queryInfo = {
+        active: true,
+        currentWindow: true
+    };
+    return new Promise(
+        function(resolve, reject) {
+            chrome.tabs.query(queryInfo, function(tabs) {
+                const tab = tabs[0];
+                if (tab) resolve(tab);
+                else reject('Error getting current tab');
+            })
+        }
+    );
+};
+
+
+function addToBlockedResources(currentUrl, details) {
+    if (blockedResources[currentUrl]) {
+        blockedResources[currentUrl].push(details.url);
     } else {
-        blockedResources[url] = [details.url];
+        blockedResources[currentUrl] = [details.url];
     }
     console.log(blockedResources);
-    chrome.browserAction.setBadgeText({ text: '451', tabId: tabId });
-    chrome.browserAction.setBadgeBackgroundColor({ color: 'red', tabId: tabId });
-    notify(details);
 }
 
 /* 
- * params -> [[clear (boolean) | text (string)] | color (string)]
+ * params -> [[clear (boolean) | text (string)] | color (string) |
+ *  tabId (number) ]
  */
 function setBrowserAction(params) {
     if (params['text']) {
-        chrome.browserAction.setBadgeText({ text: params['text'], tabId: params['tabId'] });
+        chrome.browserAction.setBadgeText({
+            text: params['text'],
+            tabId: params['tabId']
+        });
     } else if (params['clear']) {
         chrome.browserAction.setBadgeText({ text: '' });
     }
     if (params['color']) {
         chrome.browserAction
-            .setBadgeBackgroundColor({ color: params['color'], tabId: params['tabId']  });
+            .setBadgeBackgroundColor({
+                color: params['color'],
+                tabId: params['tabId']
+            });
     }
 }
 
-/**
- * Get the current URL. Citation: https://developer.chrome.com/extensions/getstarted
- * @param {function(string)} callback - called when the URL of the current tab
- *   is found.
- */
-function getCurrentTabId(details, callback) {
-    var queryInfo = {
-        active: true,
-        currentWindow: true
-    };
-    chrome.tabs.query(queryInfo, function(tabs) {
-        var tab = tabs[0];
-        var url = tab.url;
-        var tabId = tab.id;
-        console.log("tab id is " + tabId)
-        callback(tabId, url, details);
-    })
-};
 
 function notify(details) {
+    console.log("in notify for " + details.url)
     const resourceUrl = details.url;
     const ipServer = details.ip;
     const timeStamp = details.timeStamp;
-    
+
     const options = {
         body: 'Click to see details',
         requireInteraction: true,
