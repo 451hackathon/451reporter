@@ -50,9 +50,11 @@ function getCurrentTabAsync() {
 
 function addToBlockedResources(currentUrl, details) {
     if (blockedResources[currentUrl]) {
-        blockedResources[currentUrl].push(details.url);
+        // note: this will overwrite any existing set of details.
+        blockedResources[currentUrl][details.url] = details;
     } else {
-        blockedResources[currentUrl] = [details.url];
+        var url = details.url;
+        blockedResources[currentUrl] = {url: details};
     }
 }
 
@@ -98,17 +100,47 @@ function notify(details) {
 
 function listBlockedResources(targ, url) {
     var l = blockedResources[url];
-    var li;
     if (!l) {
         console.error("no blocked resources for " + url);
-        li = document.createElement('li');
-        li.innerText = "no blocked resources found! something is broken.";
-        targ.appendChild(li);
+        var err = document.createElement('div');
+        err.innerText = "no blocked resources found! something is broken.";
+        targ.appendChild(err);
     } else {
-        for (var details of l) {
-            li = document.createElement('li');
-            li.innerText = details;
-            targ.appendChild(li);
+        var reportbutton;
+        var base;
+        var info;
+        var subresources_blocked = false;
+        var main_resource_blocked = false;
+        var subresources = document.createElement('div');
+        for (var subresource in l) {
+            var blockedurl = l[subresource].url;
+            reportbutton = document.createElement('button');
+            reportbutton.innerText = 'Report';
+            reportbutton.onclick = function() {
+                sendReportToCollector(l[subresource]);
+            };
+            base = document.createElement('div');
+            info = document.createElement('span');
+            base.appendChild(reportbutton);
+            base.appendChild(info);
+            if (url == blockedurl) {
+                info.innerText = 'This webpage appears to have been censored!';
+                main_resource_blocked = true;
+                targ.appendChild(base);
+            } else {
+                subresources_blocked = true;
+                info.innerText = blockedurl;
+                subresources.appendChild(base);
+            }
+        }
+        if (subresources_blocked) {
+            base = document.createElement('p');
+            if (!main_resource_blocked)
+                base.innerText = 'It looks like the following items on this page were censored:';
+            else
+                base.innerText = 'And also, the following items on this page were censored:';
+            targ.appendChild(base);
+            targ.appendChild(subresources);
         }
     }
 };
