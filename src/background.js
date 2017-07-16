@@ -3,7 +3,7 @@
  */
 let blockedResources = {};
 
-const COLLECTOR_URL = "http://collector.wirecdn.com/report";
+const COLLECTOR_URL = "https://collector.wirecdn.com/report";
 
 /* https://developer.chrome.com/extensions/webRequest#event-onCompleted */
 chrome.webRequest.onCompleted.addListener(function(details) {
