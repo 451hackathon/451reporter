@@ -124,9 +124,11 @@ function listBlockedResources(targ, url) {
             base.appendChild(reportbutton);
             base.appendChild(info);
             if (url == blockedurl) {
-                info.innerText = 'This webpage appears to have been censored!';
-                main_resource_blocked = true;
-                targ.appendChild(base);
+                if (!main_resource_blocked) { // Protect this from being mysteriously called twice :(
+                    info.innerText = 'This webpage appears to have been censored!';
+                    main_resource_blocked = true;
+                    targ.appendChild(base);
+                }
             } else {
                 subresources_blocked = true;
                 info.innerText = blockedurl;
