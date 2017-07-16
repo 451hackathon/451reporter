@@ -54,7 +54,6 @@ function addToBlockedResources(currentUrl, details) {
     } else {
         blockedResources[currentUrl] = [details.url];
     }
-    console.log(blockedResources);
 }
 
 
@@ -75,7 +74,6 @@ function sendReportToCollector(details) {
 }
 
 function notify(details) {
-    console.log("in notify for " + details.url);
     const resourceUrl = details.url;
     const ipServer = details.ip;
     const timeStamp = details.timeStamp;
