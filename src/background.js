@@ -3,6 +3,8 @@
  */
 let blockedResources = {};
 
+const COLLECTOR_URL = "http://collector.wirecdn.com/report";
+
 /* https://developer.chrome.com/extensions/webRequest#event-onCompleted */
 chrome.webRequest.onCompleted.addListener(function(details) {
     if (details.statusCode == 451) {
@@ -53,6 +55,23 @@ function addToBlockedResources(currentUrl, details) {
         blockedResources[currentUrl] = [details.url];
     }
     console.log(blockedResources);
+}
+
+
+function sendReportToCollector(details) {
+    const report = {
+        url: details.url,
+        creator: '451reporter',
+        version: '0.0.1',
+        status: details.statusCode,
+        statusText: 'Unavailable for legal reasons',
+        blockedBy: details.ip,
+        date: new Date(details.timeStamp).toISOString()
+    }
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", COLLECTOR_URL, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify(report));
 }
 
 function notify(details) {
