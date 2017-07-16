@@ -21,7 +21,7 @@ chrome.webRequest.onCompleted.addListener(function(details) {
             })
             .catch((error) => console.error(error));
         /* Create a notification */
-        notify(details);
+//        notify(details);
     }
 }, { urls: ["<all_urls>"] });
 
