@@ -97,3 +97,19 @@ function notify(details) {
         alert(alertMessage);
     };
 }
+
+function listBlockedResources(targ, url) {
+    var l = blockedResources[url];
+    if (!l) {
+        console.error("no blocked resources for " + url);
+        document.createElement('li');
+        li.innerText = "no blocked resources found! something is broken.";
+        targ.appendChild(li);
+    } else {
+        for (var details of l) {
+            var li = document.createElement('li');
+            li.innerText = details.url;
+            targ.appendChild(li);
+        }
+    }
+};

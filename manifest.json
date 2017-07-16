@@ -17,7 +17,8 @@
     ]
   },
   "page_action": {
-    "default_title": "451Reporter"
+    "default_title": "451Reporter",
+    "default_popup": "src/popup.html"
   },
   "manifest_version": 2
 }
