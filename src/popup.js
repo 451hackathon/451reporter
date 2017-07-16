@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     var targ = document.getElementById('reports');
-    getCurrentTabAsync()
+    var bg = chrome.extension.getBackgroundPage();
+    bg.getCurrentTabAsync()
         .then((currentTab) => {
-            listBlockedResources(targ, currentTab.url);
+            bg.listBlockedResources(targ, currentTab.url);
         })
         .catch((error) => console.error(error));
 });
