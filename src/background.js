@@ -67,7 +67,7 @@ function sendReportToCollector(details) {
         statusText: 'Unavailable for legal reasons',
         blockedBy: details.ip,
         date: new Date(details.timeStamp).toISOString()
-    }
+    };
     let xhr = new XMLHttpRequest();
     xhr.open("POST", COLLECTOR_URL, true);
     xhr.setRequestHeader("Content-Type", "application/json");
