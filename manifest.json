@@ -9,7 +9,7 @@
     "notifications"
   ],
   "icons": {
-    "100": "assets/icon-100.png"
+    "128": "assets/icon-128.png"
   },
   "background": {
     "scripts": [
