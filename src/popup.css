@@ -1,6 +1,9 @@
 body {
-    width: 60em;
+    width: 40em;
 }
 img {
     float: left;
+}
+button {
+    margin-right: 1em;
 }
