@@ -9,7 +9,7 @@ Currently all this extension does is display a tiny red banner if the browser re
 - ensure that "Developer mode" is checked
 - Click on `Load unpacked extension...` and navigate to the downloaded repo. Press Select / Okay.
 - Make sure that the extension icon is visible next to the omnibox / address bar. If it is not, it's probably hidden under the options menu on the right hand side. Click the vertical three dots, right click the extension icon, and click `Keep in Toolbar`.
-- Test! Expected behaviour is that the extension icon will display `451` in a small red banner for 3 seconds.
+- Test! Expected behaviour is that the extension icon `451` will become enabled, and a button is available to report the blockage to a censorship monitor.
 
 Example websites to test on:
  * [https://github.com/SonyPS3/scedev](https://github.com/SonyPS3/scedev)
