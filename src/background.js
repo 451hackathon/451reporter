@@ -98,15 +98,16 @@ function notify(details) {
 
 function listBlockedResources(targ, url) {
     var l = blockedResources[url];
+    var li;
     if (!l) {
         console.error("no blocked resources for " + url);
-        var li = document.createElement('li');
+        li = document.createElement('li');
         li.innerText = "no blocked resources found! something is broken.";
         targ.appendChild(li);
     } else {
         for (var details of l) {
-            var li = document.createElement('li');
-            li.innerText = details.url;
+            li = document.createElement('li');
+            li.innerText = details;
             targ.appendChild(li);
         }
     }
